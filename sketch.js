@@ -2,10 +2,13 @@ let mobilenet;
 let classifier;
 let video;
 let results;
+let sadClicks = 0;
+let happyClicks = 0;
 
 let body = document.getElementsByTagName('body')[0];
 let rainAudio = document.getElementById("rain");
 let cricketAudio = document.getElementById("crickets");
+let buttonAudio = document.getElementById("buttonAudio");
 
 function modelReady() {
     console.log('Model is ready!!!');
@@ -61,12 +64,21 @@ function setup() {
     classifier = mobilenet.classification(video, videoReady);
 
     document.getElementById('sad').onclick = function () {
+        sadClicks += 1;
+        document.getElementById('sad').innerHTML = " <i class=\"fas fa-sad-tear\"></i>" + "Sad images trained: " + sadClicks;
         classifier.addImage('sad');
     };
     document.getElementById('happy').onclick = function() {
+        happyClicks += 1;
+        document.getElementById('happy').innerHTML = " <i class=\"fas fa-smile\"></i>" + "Happy images trained: " + happyClicks;
         classifier.addImage('happy');
     };
     document.getElementById('train').onclick = function() {
+        buttonAudio.play();
+        document.getElementById('sad').innerHTML = " <i class=\"fas fa-sad-tear\"></i>" + "Sad";
+        document.getElementById('happy').innerHTML = " <i class=\"fas fa-smile\"></i>" + "Happy";
+        happyClicks = 0;
+        sadClicks = 0;
         classifier.train(whileTraining);
     };
 }
